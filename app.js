@@ -67,7 +67,8 @@ const options = () => {
 
 // VIEW ALL DEPARTMENTS
 const viewDepartments = () => {
-    const sql = // insert query here
+    const sql = `SELECT department.name AS Departments 
+                FROM department`;
 
     db.query(sql, (err, res) => {
         if (err) {
@@ -81,7 +82,11 @@ const viewDepartments = () => {
 
 // VIEW ALL ROLES
 const viewRoles = () => {
-    const sql = // insert query here
+    const sql = `SELECT role.title AS Title,
+                        role.salary AS Salary,
+                        department.name AS Department
+                FROM role
+                JOIN department ON role.department_id = department.id;`
 
     db.query(sql, (err, res) => {
         if (err) {
@@ -95,7 +100,17 @@ const viewRoles = () => {
 
 // VIEW ALL EMPLOYEES
 const viewEmployees = () => {
-    const sql = // insert query here
+    const sql = `SELECT employee.id AS id,
+                        employee.first_name,
+                        employee.last_name,
+                        role.title,
+                        department.name AS Department,
+                        role.salary,
+                CONCAT (manager.first_name, " ",manager.last_name) AS Manager
+                FROM employee
+                LEFT JOIN role ON employee.role_id = role.id
+                LEFT JOIN department ON role.department_id = department.id
+                LEFT JOIN employee manager ON employee.manager_id = manager.id;`
 
     db.query(sql, (err, res) => {
         if (err) {
