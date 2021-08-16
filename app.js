@@ -23,7 +23,7 @@ db.connect(err => {
 })
 
 
-///// Inquirer prompts /////
+
 
 // Show options
 const options = () => {
@@ -43,51 +43,72 @@ const options = () => {
         }
     ])
 
+    .then(data => {
+        const { options } = data;
+
+        if (options === 'View Departments') {
+            return viewDepartments();
+        } else if (options === 'View Roles') {
+            return viewRoles();
+        } else if (options === 'View Employees') {
+            return viewEmployees();
+        } else if (options === 'Add a Department') {
+            return addDepartment();
+        } else if (options === 'Add a Role') {
+            return addRole();
+        } else if (options === 'Add an Employee') {
+            return addEmployee();
+        } else if (options === 'Update an Employee Role') {
+            return updateEmployee();
+        }
+    })
 };
 
-// prompts for addEmployee
-const addEmployee = () => {
-    inquirer.prompt([
-        {
-            type: 'input',
-            name: 'firstName',
-            message: "Enter the employee's first name",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter a first name.')
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'lastName',
-            message: "Enter the employee's last name.",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter a last name.')
-                }
-            }
-        },
-        {
-            type: 'list',
-            name: 'role',
-            message: "Enter the employee's role.",
-            choices: ['']
-        },
-        {
-            type: 'list',
-            name: 'manager',
-            message: "Enter the name of the employee's manager.",
-            choices: ['']
-        },
-    ])
-}
 
-// prompts for addDepartment
+// VIEW ALL DEPARTMENTS
+const viewDepartments = () => {
+    const sql = // insert query here
+
+    db.query(sql, (err, res) => {
+        if (err) {
+            console.log(err)
+        }
+        console.log('----------')
+        console.table(res)
+        options();
+    })
+};
+
+// VIEW ALL ROLES
+const viewRoles = () => {
+    const sql = // insert query here
+
+    db.query(sql, (err, res) => {
+        if (err) {
+            console.log(err)
+        }
+        console.log('----------')
+        console.table(res)
+        options();
+    })
+};
+
+// VIEW ALL EMPLOYEES
+const viewEmployees = () => {
+    const sql = // insert query here
+
+    db.query(sql, (err, res) => {
+        if (err) {
+            console.log(err)
+        }
+        console.log('----------')
+        console.table(res)
+        options();
+    })
+};
+
+
+// ADD DEPARTMENT
 const addDepartment = () => {
     inquirer.prompt([
         {
@@ -106,7 +127,7 @@ const addDepartment = () => {
 };
 
 
-// prompts for addRole
+// ADD ROLE
 const addRole = () => {
     inquirer.prompt([
         {
@@ -148,7 +169,51 @@ const addRole = () => {
     ])
 };
 
-//prompts for updateEmployee
+
+// ADD EMPLOYEE
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: "Enter the employee's first name",
+            validate: nameInput => {
+                if (nameInput) {
+                    return true;
+                } else {
+                    console.log('Please enter a first name.')
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: "Enter the employee's last name.",
+            validate: nameInput => {
+                if (nameInput) {
+                    return true;
+                } else {
+                    console.log('Please enter a last name.')
+                }
+            }
+        },
+        {
+            type: 'list',
+            name: 'role',
+            message: "Enter the employee's role.",
+            choices: ['']
+        },
+        {
+            type: 'list',
+            name: 'manager',
+            message: "Enter the name of the employee's manager.",
+            choices: ['']
+        },
+    ])
+}
+
+
+// UPDATE EMPLOYEE
 const updateEmployee = () => {
     inquirer.prompt([
         {
