@@ -141,7 +141,7 @@ const addDepartment = () => {
     ])
     .then(answer => {
 
-        db.query(`INSERT INTO department (name) VALUES (?)`, answer.department, (err, res) => {
+        db.query(`INSERT INTO department (name) VALUES (?)`, answer.deptName, (err, res) => {
             if (err) {
                 console.log(err);
             }
@@ -184,12 +184,12 @@ const addRole = () => {
         {
             type: 'input',
             name: 'roleDept',
-            message: "Enter the role's department.",
+            message: "Which department is this role part of?",
             validate: roleDeptInput => {
-                if (roleDeptInput) {
+                if (reoleDeptInput) {
                     return true;
                 } else {
-                    console.log('Please enter a department name.')
+                    console.log("Please enter a department name.")
                 }
             }
         }
