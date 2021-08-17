@@ -1,7 +1,7 @@
 ## Employee_Tracker
 
 ## Description
-A command-line app built using Node.js, MySQL and the Inquirer package, for keeping track of employees, roles, departments, salaries, etc.
+A command-line app built using Node.js, MySQL and the Inquirer package, for keeping track of a company's employees, roles, departments, salaries, etc.
 
 ![Screen Shot 2021-08-17 at 6 25 57 PM](https://user-images.githubusercontent.com/83983013/129808797-515e7a54-62a1-4fd1-95ab-68f75df26bc9.png)
 
