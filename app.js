@@ -129,7 +129,7 @@ const addDepartment = () => {
         {
             type: 'input',
             name: 'deptName',
-            message: "Enter the department name.",
+            message: "Enter the department name:",
             validate: deptInput => {
                 if (deptInput) {
                     return true;
@@ -160,7 +160,7 @@ const addRole = () => {
         {
             type: 'input',
             name: 'roleName',
-            message: "Enter the role name.",
+            message: "Enter the role name:",
             validate: roleInput => {
                 if (roleInput) {
                     return true;
@@ -172,7 +172,7 @@ const addRole = () => {
         {
             type: 'input',
             name: 'salary',
-            message: "Enter the salary.",
+            message: "Enter the salary:",
             validate: salaryInput => {
                 if (salaryInput) {
                     return true;
@@ -195,7 +195,7 @@ const addRole = () => {
                 {
                     type: 'list',
                     name: 'department',
-                    message: "Select the role's department.",
+                    message: "Select the role's department:",
                     choices: departments
                 }
             ])
@@ -224,7 +224,7 @@ const addEmployee = () => {
         {
             type: 'input',
             name: 'firstName',
-            message: "Enter the employee's first name",
+            message: "Enter the employee's first name:",
             validate: nameInput => {
                 if (nameInput) {
                     return true;
@@ -236,7 +236,7 @@ const addEmployee = () => {
         {
             type: 'input',
             name: 'lastName',
-            message: "Enter the employee's last name.",
+            message: "Enter the employee's last name:",
             validate: nameInput => {
                 if (nameInput) {
                     return true;
@@ -260,7 +260,7 @@ const addEmployee = () => {
                 {
                     type: 'list',
                     name: 'role',
-                    message: "Select the employee's role.",
+                    message: "Select the employee's role:",
                     choices: roles
                 }
             ])
@@ -268,17 +268,17 @@ const addEmployee = () => {
                 const role = roleEntry.role
                 params.push(role);
 
-                db.query(`SELECT * FROM employee WHERE manager_id NULL`, (err, res) => {
+                db.query(`SELECT * FROM employee WHERE manager_id IS NULL`, (err, res) => {
                     if (err) {
                         console.log(err);
                     }
-                    const managers = res.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id}))
-                    managers.push({name: "None" , value: null})
+                    const managers = res.map (({ id, first_name, last_name }) => ({name: first_name + " " + last_name, value: id}))
+                    managers.push({name: "none" , value: null})
                     inquirer.prompt([
                         {
                             type: 'list',
                             name: 'manager',
-                            message: "Enter the name of the employee's manager.",
+                            message: "Enter the name of the employee's manager:",
                             choices: managers
                         }
                     ])
