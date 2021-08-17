@@ -195,7 +195,7 @@ const addRole = () => {
                 {
                     type: 'list',
                     name: 'department',
-                    message: "Enter the role's department.",
+                    message: "Select the role's department.",
                     choices: departments
                 }
             ])
@@ -260,14 +260,15 @@ const addEmployee = () => {
                 {
                     type: 'list',
                     name: 'role',
-                    message: "Enter the employee's role.",
-                    choices: ['']
+                    message: "Select the employee's role.",
+                    choices: roles
                 }
             ])
             .then(roleEntry => {
-                const role = roleEntry.roleparams.push(role);
+                const role = roleEntry.role
+                params.push(role);
 
-                db.query(`SELECT * FROM employee WHERE manager_id is NULL`, (err, res) => {
+                db.query(`SELECT * FROM employee WHERE manager_id NULL`, (err, res) => {
                     if (err) {
                         console.log(err);
                     }
@@ -278,7 +279,7 @@ const addEmployee = () => {
                             type: 'list',
                             name: 'manager',
                             message: "Enter the name of the employee's manager.",
-                            choices: ['']
+                            choices: managers
                         }
                     ])
                     .then(managerEntry => {
