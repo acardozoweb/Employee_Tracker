@@ -180,22 +180,10 @@ const addRole = () => {
                     console.log('Please enter a salary.')
                 }
             }
-        },
-        {
-            type: 'input',
-            name: 'roleDept',
-            message: "Which department is this role part of?",
-            validate: roleDeptInput => {
-                if (reoleDeptInput) {
-                    return true;
-                } else {
-                    console.log("Please enter a department name.")
-                }
-            }
         }
     ])
     .then(answers => {
-        const params = [answers.role, answers.salary]
+        const params = [answers.roleName, answers.salary]
 
         db.query(`SELECT * FROM department`, (err, res) => {
             if (err) {
