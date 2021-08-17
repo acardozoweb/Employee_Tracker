@@ -306,11 +306,61 @@ const addEmployee = () => {
 
 // UPDATE EMPLOYEE
 const updateEmployee = () => {
-    inquirer.prompt([
-        {
 
+    db.query(`SELECT * FROM employee`, (err, res) => {
+        if (err) {
+            console.log(err);
         }
-    ])
+        const employees = res.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id}));
+
+        inquirer.prompt([
+            {
+                type: 'list',
+                name: 'employee',
+                message: 'Select which employee to update:',
+                choices: employees
+            }
+        ])
+        .then(empSelection => {
+            const emp = empSelection.employee;
+            const params = []
+
+            params.push(emp);
+
+            db.query(`SELECT * FROM role`, (err, res) => {
+                if (err) {
+                    console.log(err)
+                }
+                const roles = res.map(({id, title}) => ({name: title, value: id}))
+
+                inquirer.prompt([
+                    {
+                        type: 'list',
+                        name: 'roles',
+                        message: "Select employee's new role:",
+                        choices: roles
+                    }
+                ])
+                .then(roleSelection => {
+                    const role = roleSelection.roles;
+                    params.push(role);
+
+                    params[0] = role;
+                    params[1] = emp;
+
+                    db.query(`UPDATE employee SET role_id = ? WHERE id = ?`, params, (err, res) => {
+                        if (err) {
+                            console.log(err)
+                        }
+                        console.log("-------------------------------");
+                        console.log("Employee role has been updated!");
+                        console.log("-------------------------------");
+                        options();
+                    })
+                })
+            })
+        })
+    })
 };
 
 
