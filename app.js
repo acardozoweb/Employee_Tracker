@@ -35,7 +35,7 @@ const options = () => {
             choices: ['View Departments', 
                       'View Roles', 
                       'View Employees', 
-                      'Add a Depertment', 
+                      'Add a Department', 
                       'Add a Role', 
                       'Add an Employee',
                       'Update an Employee Role'
@@ -139,6 +139,18 @@ const addDepartment = () => {
             }
         }
     ])
+    .then(answer => {
+
+        db.query(`INSERT INTO department (name) VALUES (?)`, answer.department, (err, res) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log("--------------------------");
+            console.log("Department has been added!");
+            console.log("--------------------------");
+            options();
+        })
+    })
 };
 
 
@@ -182,6 +194,39 @@ const addRole = () => {
             }
         }
     ])
+    .then(answers => {
+        const params = [answers.role, answers.salary]
+
+        db.query(`SELECT * FROM department`, (err, res) => {
+            if (err) {
+                console.log(err)
+            }
+            const departments = res.map(({id,name}) => ({name: name, value: id}));
+
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'department',
+                    message: "Enter the role's department.",
+                    choices: departments
+                }
+            ])
+            .then(deptentry => {
+                const department = deptentry.department;
+                params.push(department);
+
+                db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, params, (err, res) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                    console.log("--------------------");
+                    console.log("Role has been added!");
+                    console.log("--------------------");
+                    options();
+                });
+            });
+        });
+    });
 };
 
 
@@ -212,20 +257,62 @@ const addEmployee = () => {
                 }
             }
         },
-        {
-            type: 'list',
-            name: 'role',
-            message: "Enter the employee's role.",
-            choices: ['']
-        },
-        {
-            type: 'list',
-            name: 'manager',
-            message: "Enter the name of the employee's manager.",
-            choices: ['']
-        },
     ])
-}
+    .then(answers => {
+        const params = [answers.firstName, answers.lastName]
+
+        db.query(`SELECT role.id, role.title FROM role`, (err, res) => {
+            if (err) {
+                console.log(err);
+            }
+
+            const roles = res.map(({ id, title}) => ({ name: title, value: id}));
+
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: "Enter the employee's role.",
+                    choices: ['']
+                }
+            ])
+            .then(roleEntry => {
+                const role = roleEntry.roleparams.push(role);
+
+                db.query(`SELECT * FROM employee WHERE manager_id is NULL`, (err, res) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    const managers = res.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id}))
+                    managers.push({name: "None" , value: null})
+                    inquirer.prompt([
+                        {
+                            type: 'list',
+                            name: 'manager',
+                            message: "Enter the name of the employee's manager.",
+                            choices: ['']
+                        }
+                    ])
+                    .then(managerEntry => {
+                        const manager = managerEntry.manager
+                        params.push(manager);
+
+                        db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id)
+                        VALUES (?, ?, ?, ?)`, params, (err, res) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            console.log("------------------------");
+                            console.log("Employee has been added!");
+                            console.log("------------------------");
+                            options();
+                        })
+                    });                    
+                });
+            });
+        });
+    });
+};
 
 
 // UPDATE EMPLOYEE
