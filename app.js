@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 const cTable = require('console.table');
 
 
-// Connect to database
+// CONNECT TO DATABASE
 const db = mysql.createConnection( {
     host: 'localhost',
     user: 'root',
@@ -23,9 +23,7 @@ db.connect(err => {
 })
 
 
-
-
-// Show options
+// SHOW OPTIONS
 const options = () => {
     inquirer.prompt([
         {
@@ -304,7 +302,7 @@ const addEmployee = () => {
 };
 
 
-// UPDATE EMPLOYEE
+// UPDATE AN EMPLOYEE ROLE
 const updateEmployee = () => {
 
     db.query(`SELECT * FROM employee`, (err, res) => {
